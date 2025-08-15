@@ -114,25 +114,33 @@ const ChatSidebar: React.FC<ChatSidebarProps> = ({
             )}
           </div>
 
-          {/* Search Bar */}
-          <div className="relative mb-3">
-            <Search size={16} className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
-            <input
-              type="text"
-              placeholder="Search chats..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-10 pr-4 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
-            />
-          </div>
+          {/* Search Bar (hidden until at least one chat exists) */}
+          {chats.length > 0 && (
+            <div className="relative mb-3">
+              <Search size={16} className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+              <input
+                type="text"
+                placeholder="Search your chats (use New Chat to start)"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="w-full pl-10 pr-4 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+              />
+              <p className="mt-1 text-xs text-gray-500">
+                Search your existing chats. To start a new conversation, click <span className="font-medium text-gray-700">New Chat</span>.
+              </p>
+            </div>
+          )}
 
           {/* New Chat Button */}
           <button
             onClick={handleCreateChat}
-            className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg transition-colors flex items-center justify-center gap-2"
+            className={`w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg transition-colors flex items-center justify-center gap-2 ${chats.length === 0 ? 'animate-pulse ring-2 ring-blue-300' : ''}`}
           >
             <Plus size={16} />
-            New Chat
+            <span>New Chat</span>
+            {chats.length === 0 && (
+              <span className="ml-2 text-xs bg-white/20 px-2 py-0.5 rounded">Start here</span>
+            )}
           </button>
         </div>
 
